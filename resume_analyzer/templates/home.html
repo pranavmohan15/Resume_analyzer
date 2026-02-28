@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block navbar_buttons %}
+<div style="display:flex;gap:10px;align-items:center;">
+    <a href="{% url 'register' %}" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;padding:8px 20px;border-radius:8px;background:var(--accent);color:#080c14;text-decoration:none;">Register</a>
+    <a href="{% url 'login' %}" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 20px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);color:var(--text);text-decoration:none;">Login</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .home-grid {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-left {
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 48px 44px 48px 60px;
+        border-right: 1px solid var(--border);
+    }
+
+    .hero-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 5px 14px; border-radius: 100px;
+        border: 1px solid rgba(79,255,176,0.3);
+        background: rgba(79,255,176,0.07);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 11px; font-weight: 600; color: var(--accent);
+        letter-spacing: 1px; text-transform: uppercase;
+        margin-bottom: 24px; width: fit-content;
+    }
+
+    .dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--accent); animation: pulse 1.8s ease infinite;
+    }
+
+    .hero-title {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: clamp(36px, 4.5vw, 68px);
+        font-weight: 800; line-height: 1.05; letter-spacing: -2px;
+        color: var(--text); margin-bottom: 18px;
+    }
+    .hero-title .accent-word { color: var(--accent); }
+
+    .hero-sub {
+        font-family: 'Inter', sans-serif; font-size: 15px;
+        color: rgba(240,244,255,0.5); line-height: 1.7; margin-bottom: 32px; max-width: 360px;
+    }
+
+    .hero-cta {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 14px 30px; border-radius: 12px;
+        background: var(--accent); color: #080c14;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 800; text-decoration: none;
+        transition: all 0.2s; width: fit-content;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(79,255,176,0.3); color: #080c14; }
+    .hero-cta svg { transition: transform 0.2s; }
+    .hero-cta:hover svg { transform: translateX(4px); }
+
+    .hero-right {
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 48px 60px 48px 44px; gap: 14px;
+    }
+
+    .right-label {
+        font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+        letter-spacing: 2px; text-transform: uppercase;
+        color: rgba(240,244,255,0.25); margin-bottom: 2px;
+    }
+
+    .feature-card {
+        display: flex; align-items: center; gap: 16px;
+        padding: 20px 22px; border-radius: 14px;
+        border: 1px solid var(--border); background: var(--surface);
+        transition: all 0.25s; cursor: default;
+    }
+    .feature-card:hover { border-color: rgba(79,255,176,0.2); transform: translateX(5px); }
+
+    .feature-icon {
+        width: 42px; height: 42px; border-radius: 10px;
+        background: rgba(79,255,176,0.09);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+
+    .feature-card h4 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px;
+    }
+
+    .feature-card p {
+        font-family: 'Inter', sans-serif; font-size: 13px;
+        color: rgba(240,244,255,0.4); line-height: 1.5;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    @media (max-width: 800px) {
+        .home-grid { grid-template-columns: 1fr; overflow-y: auto; }
+        .hero-left { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 24px 32px; }
+        .hero-right { padding: 28px 24px 40px; }
+    }
+</style>
+
+<div class="home-grid">
+    <div class="hero-left">
+        <div class="hero-badge"><span class="dot"></span>AI-Powered Analysis</div>
+        <h1 class="hero-title">Get Hired<br><span class="accent-word">Smarter</span></h1>
+        <p class="hero-sub">Upload your resume, paste a job description — we score your fit and show exactly what's missing.</p>
+        <a href="{% url 'register' %}" class="hero-cta">
+            Start Analyzing
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+
+    <div class="hero-right">
+        <p class="right-label">How it works</p>
+        <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <div>
+                <h4>Upload Resume</h4>
+                <p>PDF or DOCX. We extract every skill, keyword, and experience point.</p>
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div>
+                <h4>Smart Matching</h4>
+                <p>Skill-based scoring maps your profile against real job requirements.</p>
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <div>
+                <h4>Instant Feedback</h4>
+                <p>See your match score and every missing skill at a glance.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

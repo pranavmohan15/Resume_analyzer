@@ -1,0 +1,115 @@
+/* ============================= */
+/* GLOBAL BACKGROUND + TYPOGRAPHY */
+/* ============================= */
+
+body.main-bg {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+}
+
+/* Prevent content hiding under fixed navbar */
+body {
+    padding-top: 90px;
+}
+
+
+/* ============================= */
+/* NAVBAR */
+/* ============================= */
+
+.navbar {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+    padding: 16px 0;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+.fit-accent {
+    font-weight: 700;
+    color: #dbeafe;
+}
+
+
+/* ============================= */
+/* HERO SECTION */
+/* ============================= */
+
+.hero-section {
+    min-height: 55vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 40px;
+}
+
+
+/* ============================= */
+/* GLASS CARD */
+/* ============================= */
+
+.glass-card {
+    padding: 40px 45px;
+    border-radius: 20px;
+    max-width: 750px;
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+
+/* ============================= */
+/* FEATURE BOX */
+/* ============================= */
+
+.feature-box {
+    padding: 25px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    transition: 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-6px);
+}
+
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
+.primary-btn {
+    padding: 14px 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ============================= */
+/* FILE INPUT */
+/* ============================= */
+
+input[type="file"] {
+    display: none;
+}

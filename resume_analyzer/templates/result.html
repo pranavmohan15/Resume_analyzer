@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .result-wrapper { width: 100%; max-width: 520px; padding: 0 20px; }
+
+    .result-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden; position: relative;
+    }
+
+    .result-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .score-hero {
+        padding: 32px 32px 24px; text-align: center;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .score-label {
+        font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+        letter-spacing: 2px; text-transform: uppercase;
+        color: rgba(240,244,255,0.3); margin-bottom: 18px;
+    }
+
+    .score-ring {
+        width: 120px; height: 120px; margin: 0 auto 16px; position: relative;
+    }
+
+    .score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+    .ring-fill {
+        fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round;
+        stroke-dasharray: 330;
+        stroke-dashoffset: calc(330 - (330 * {{ result.match_score }} / 100));
+        filter: drop-shadow(0 0 6px rgba(79,255,176,0.5));
+    }
+
+    .score-inner {
+        position: absolute; inset: 0; display: flex;
+        flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    .score-number {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 36px; font-weight: 800; color: var(--accent);
+        line-height: 1; letter-spacing: -2px;
+    }
+
+    .score-unit {
+        font-family: 'Inter', sans-serif; font-size: 11px;
+        color: rgba(240,244,255,0.4); margin-top: 2px;
+    }
+
+    .score-title {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 19px; font-weight: 700; color: #f0f4ff;
+    }
+
+    .score-bar-wrap {
+        margin: 12px auto 0; max-width: 220px; height: 4px;
+        border-radius: 100px; background: rgba(255,255,255,0.07); overflow: hidden;
+    }
+
+    .score-bar-fill {
+        height: 100%; border-radius: 100px;
+        background: linear-gradient(90deg, #00b4ff, var(--accent));
+        width: {{ result.match_score }}%;
+    }
+
+    .skills-section { padding: 20px 32px; }
+
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+    .section-head h4 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 700; color: #f0f4ff;
+    }
+
+    .section-badge {
+        font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+        padding: 3px 10px; border-radius: 100px;
+        background: rgba(255,77,109,0.12); color: #ff4d6d;
+        border: 1px solid rgba(255,77,109,0.2);
+    }
+    .section-badge.good {
+        background: rgba(79,255,176,0.1); color: var(--accent);
+        border-color: rgba(79,255,176,0.2);
+    }
+
+    .missing-skill-text {
+        font-family: 'Inter', sans-serif; font-size: 14px; color: #ff8099;
+        line-height: 1.6; background: rgba(255,77,109,0.06);
+        border: 1px solid rgba(255,77,109,0.12);
+        border-radius: 10px; padding: 14px 16px;
+    }
+
+    .success-block {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 16px; background: rgba(79,255,176,0.07);
+        border: 1px solid rgba(79,255,176,0.18); border-radius: 10px;
+    }
+
+    .success-icon {
+        width: 36px; height: 36px; border-radius: 8px;
+        background: rgba(79,255,176,0.15); display: flex;
+        align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;
+    }
+
+    .success-text h5 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 2px;
+    }
+
+    .success-text p {
+        font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(240,244,255,0.4);
+    }
+
+    .result-footer { padding: 0 32px 24px; }
+
+    .back-btn {
+        width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+        padding: 12px; border-radius: 10px;
+        background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+        color: #f0f4ff; font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s;
+    }
+    .back-btn:hover {
+        background: rgba(79,255,176,0.07); border-color: rgba(79,255,176,0.3); color: var(--accent);
+    }
+</style>
+
+<div class="result-wrapper">
+    <div class="result-card">
+        <div class="score-hero">
+            <div class="score-label">Analysis Result</div>
+            <div class="score-ring">
+                <svg viewBox="0 0 120 120">
+                    <circle class="ring-bg" cx="60" cy="60" r="52"/>
+                    <circle class="ring-fill" cx="60" cy="60" r="52"/>
+                </svg>
+                <div class="score-inner">
+                    <div class="score-number">{{ result.match_score }}</div>
+                    <div class="score-unit">% match</div>
+                </div>
+            </div>
+            <div class="score-title">
+                {% if result.match_score >= 80 %}Excellent Fit
+                {% elif result.match_score >= 60 %}Good Fit
+                {% elif result.match_score >= 40 %}Partial Fit
+                {% else %}Needs Work{% endif %}
+            </div>
+            <div class="score-bar-wrap"><div class="score-bar-fill"></div></div>
+        </div>
+
+        <div class="skills-section">
+            <div class="section-head">
+                <h4>Missing Skills</h4>
+                {% if result.missing_skills %}
+                    <span class="section-badge">Needs attention</span>
+                {% else %}
+                    <span class="section-badge good">All good</span>
+                {% endif %}
+            </div>
+            {% if result.missing_skills %}
+                <div class="missing-skill-text">{{ result.missing_skills }}</div>
+            {% else %}
+                <div class="success-block">
+                    <div class="success-icon">✓</div>
+                    <div class="success-text">
+                        <h5>No missing skills!</h5>
+                        <p>Your resume covers all the required skills for this role.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="result-footer">
+            <a href="{% url 'analyze' %}" class="back-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Analyze Another Resume
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

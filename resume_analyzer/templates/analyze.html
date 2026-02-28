@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .analyze-wrapper { width: 100%; max-width: 680px; padding: 0 20px; }
+
+    .analyze-header { margin-bottom: 18px; }
+
+    .page-tag {
+        font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+        letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+        display: block; margin-bottom: 6px;
+    }
+
+    .analyze-header h2 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #f0f4ff;
+    }
+
+    .analyze-header p {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px; color: rgba(240,244,255,0.4); margin-top: 4px;
+    }
+
+    .analyze-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 18px; padding: 28px 28px 24px;
+        position: relative; overflow: hidden;
+    }
+
+    .analyze-card::before {
+        content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+    .field-group { margin-bottom: 16px; }
+
+    .field-label {
+        display: block; font-family: 'Inter', sans-serif;
+        font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+        text-transform: uppercase; color: rgba(240,244,255,0.4); margin-bottom: 7px;
+    }
+
+    .analyze-card input[type="text"],
+    .analyze-card input[type="email"],
+    .analyze-card textarea {
+        width: 100%; padding: 11px 13px; border-radius: 9px;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.05);
+        color: #f0f4ff !important; -webkit-text-fill-color: #f0f4ff;
+        caret-color: var(--accent);
+        font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;
+        outline: none; transition: all 0.2s; -webkit-appearance: none;
+    }
+
+    .analyze-card input:focus, .analyze-card textarea:focus {
+        border-color: rgba(79,255,176,0.4);
+        background: rgba(79,255,176,0.03);
+        box-shadow: 0 0 0 3px rgba(79,255,176,0.07);
+    }
+
+    .analyze-card input::placeholder, .analyze-card textarea::placeholder {
+        color: rgba(240,244,255,0.22); -webkit-text-fill-color: rgba(240,244,255,0.22);
+    }
+
+    .analyze-card textarea { resize: none; min-height: 110px; }
+
+    .divider { height: 1px; background: var(--border); margin: 2px 0 16px; }
+
+    .bottom-row {
+        display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+    }
+
+    .upload-zone {
+        border: 1.5px dashed rgba(79,255,176,0.2); border-radius: 10px;
+        padding: 12px 16px; cursor: pointer; transition: all 0.2s;
+        background: rgba(79,255,176,0.02);
+        display: flex; align-items: center; gap: 12px;
+    }
+    .upload-zone:hover { border-color: rgba(79,255,176,0.45); background: rgba(79,255,176,0.04); }
+    .upload-zone input { display: none; }
+
+    .upload-icon {
+        width: 34px; height: 34px; border-radius: 8px;
+        background: rgba(79,255,176,0.1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px; flex-shrink: 0;
+    }
+
+    .upload-title {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 13px; font-weight: 700; color: #f0f4ff;
+    }
+
+    .upload-sub { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(240,244,255,0.35); }
+
+    .file-chosen { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--accent); font-weight: 500; margin-top: 1px; }
+
+    .analyze-btn {
+        padding: 12px 24px; border-radius: 10px;
+        background: var(--accent); border: none; color: #080c14;
+        font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 800;
+        cursor: pointer; transition: all 0.2s;
+        display: flex; align-items: center; gap: 7px; white-space: nowrap;
+    }
+    .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(79,255,176,0.3); }
+    .analyze-btn svg { transition: transform 0.2s; }
+    .analyze-btn:hover svg { transform: translateX(3px); }
+</style>
+
+<div class="analyze-wrapper">
+    <div class="analyze-header">
+        <span class="page-tag">Resume Analyzer</span>
+        <h2>How well do you fit this role?</h2>
+        <p>Fill in the job details and upload your resume to get your score.</p>
+    </div>
+
+    <div class="analyze-card">
+        <form method="POST" enctype="multipart/form-data" autocomplete="off">
+            {% csrf_token %}
+
+            <div class="form-row-2">
+                <div>
+                    <label class="field-label">Position</label>
+                    {{ form.position }}
+                </div>
+                <div>
+                    <label class="field-label">Company Name</label>
+                    {{ form.company_name }}
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field-group">
+                <label class="field-label">Job Description</label>
+                {{ form.description }}
+            </div>
+
+            <div class="bottom-row">
+                <label class="upload-zone">
+                    <div class="upload-icon">📎</div>
+                    <div>
+                        <div class="upload-title" id="upload-title">Upload your resume</div>
+                        <div class="upload-sub">PDF or DOCX</div>
+                        <div class="file-chosen" id="file-chosen"></div>
+                    </div>
+                    {{ form.resume_file }}
+                </label>
+
+                <button type="submit" class="analyze-btn">
+                    Analyze
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.querySelector("input[type='file']");
+    const uploadTitle = document.getElementById("upload-title");
+    const fileChosen = document.getElementById("file-chosen");
+    if (fileInput) {
+        fileInput.addEventListener("change", function () {
+            if (this.files.length > 0) {
+                uploadTitle.textContent = "File selected";
+                fileChosen.textContent = "✓ " + this.files[0].name;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
