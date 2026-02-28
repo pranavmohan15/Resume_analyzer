@@ -3,3 +3,4 @@ gunicorn
 sentence-transformers
 scikit-learn
 mysqlclient
+python-dotenv
